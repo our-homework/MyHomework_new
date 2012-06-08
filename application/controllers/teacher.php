@@ -124,9 +124,7 @@ class Teacher extends User {
 		$this->load->view('header', $data);
 		$this->load->view('detailedHw_tch_view', $data);
 		$this->load->view('footer');
-	}
-	
-	
+	}	
 	
 	public function triggle_group_lock()
 	{

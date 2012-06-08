@@ -4,6 +4,7 @@
 	
 /*default controller*/
 include_once 'User.php';
+include_once 'Teacher.php';
 
 class Student extends User {
 	function __construct() {
@@ -34,14 +35,22 @@ class Student extends User {
 		$this->load->view('footer');
 	}
 	
+	
+	
+	//TODO: be refactoring... unsuitable fcn name
 	public function join_team() {
+		$data = $this->Group_model->get_all_teams_info();
 		$data['css'] = 'typeBigMetro';
 		$data['title'] = "选择小组";
-		
-		$data['groups'] = $this->Group_model->get_all_group()->result_array();
-		
 		$this->load->view('header', $data);
   		$this->load->view('manageGrp_view', $data);
+		$this->load->view('footer');
+	}
+	
+	public function join_team_check() {
+		$data['css'] = 'typeTextMetro';
+		$this->load->view('header', $data);
+  		$this->load->view('myTm_view');
 		$this->load->view('footer');
 	}
 
