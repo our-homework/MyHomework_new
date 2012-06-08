@@ -37,7 +37,7 @@
             	<div class="metro colora">
         			<div class="metroText">
 	        			<div textType="title" ><?= $hw['title']?></div>
-	            		<?= $hw['grade']?>
+	            		<?= $hw['deadline']?>
         			</div>
             	</div>
        			 </a>

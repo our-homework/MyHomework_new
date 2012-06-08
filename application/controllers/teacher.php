@@ -14,6 +14,7 @@ class Teacher extends User {
 	public function index()
 	{
 		$this->session->set_userdata('group_lock', $this->Group_model->is_lock());
+		$data['homeworks'] = $this->Homework_model->get_all_homeworks()->result_array();
 		$data['css'] = 'typeLittleMetro';
 		$this->load->view('header', $data);
 		$this->load->view('tchHm_view');
@@ -53,7 +54,7 @@ class Teacher extends User {
 			$this->add_user($data);
 		}
 		else {
-			$this->user_admin();
+			redirect('teacher/user_admin');
 		}
 	}
 	
@@ -80,35 +81,48 @@ class Teacher extends User {
 		for ($i = 3; $i <= sizeof($delete_uids); $i++) {
 			$this->Teacher_model->delete_user_by_uid($delete_uids[$i]);
 		}
-		$this->user_admin();
+		redirect('teacher/user_admin');
 	}
 	
-	public function publishHw() {
+	public function publishHw($data = array()) {
+		isset($data['title']) ? : $data['title'] = '发布作业';
 		$data['css'] = 'typeAlert';
 		$this->load->view("header", $data);
-		$this->load->view("publishHw_view");
+		$this->load->view("publishHw_view", $data);
 		$this->load->view("footer");
 	}
 	
 	public function publishHw_check() {
+		$hid = $this->uri->segment(3);
 		$data['title'] = $this->input->post('name');
 		$data['deadline'] = $this->input->post('deadline');
 		$data['content'] = $this->input->post('request');
 		$data['author'] = $this->session->userdata("user_name");
 		
-		if (!$this->Homework_model->add_homework($data)) {
-			$data['errorMsg'] = 'unknown error！';
-			$this->publishHw($data);
+		if ($hid != '0') {
+			if (!$this->Homework_model->update_homework($hid, $data)) {
+				$data['errorMsg'] = '修改失败！';
+				$this->publishHw($data);
+			}
+			else {
+				redirect('teacher/hw_history');
+			}
 		}
 		else {
-			$this->hw_history();
+			if(!$this->Homework_model->add_homework($data)) {
+				$data['errorMsg'] = 'unknown error！';
+				$this->publishHw($data);
+			}
+			else {
+				redirect('teacher/hw_history');
+			}
 		}
 	}
 	
 	public function hw_history() {
 		//$this->load
 		$data['css'] = 'typeBigMetro';
-		$data['homeworks'] = $this->Homework_model->get_all_homework()->result_array();
+		$data['homeworks'] = $this->Homework_model->get_all_homeworks()->result_array();
 		$this->load->view('header', $data);
 		$this->load->view('groupedHw_view', $data);
 		$this->load->view('footer');
@@ -126,7 +140,13 @@ class Teacher extends User {
 		$this->load->view('footer');
 	}
 	
-	
+	public function edit_hw()
+	{
+		$hid = $this->uri->segment(3);
+		$data['title'] = '修改作业';
+		$data['homework'] = $this->Homework_model->get_homework_by_hid($hid)->row();
+		$this->publishHw($data);
+	}
 	
 	public function triggle_group_lock()
 	{
@@ -134,13 +154,14 @@ class Teacher extends User {
 			$this->Group_model->unlock_group();
 		else 
 			$this->Group_model->lock_group();
-		$this->index();
+		redirect('teacher/group_admin');
 	}
 	
 	public function group_admin($data = array())
 	{
 		$data['title'] = "小组信息";
 		$data['css'] = 'typeBigMetro';
+		$this->session->set_userdata('group_lock', $this->Group_model->is_lock());
 		$data['groups'] = $this->Group_model->get_all_group()->result_array();
 		$this->load->view('header', $data);
 		$this->load->view('manageGrp_view', $data);

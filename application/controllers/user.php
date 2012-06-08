@@ -46,18 +46,13 @@ class User extends CI_Controller {
 				$session['user_name'] = $user->user_name;
 				$session['uid'] = $user->uid;
 				$session['role'] = $user->role;
-				$session['gourp_lock'] = $this->Group_model->is_lock();
+				$this->session->set_userdata($session);	
 				if ($session['role'] == 'ta' || $session['role'] == 'teacher'){
-					$view = 'tchHm_view';
+					redirect('teacher');
 				}
 				else {
-					$view = 'stuHm_view';
-					$data['homeworks'] = $this->Homework_model->get_homeworks_by_uid($user->uid)->result_array();
+					redirect('student');
 				}
-				$this->session->set_userdata($session);	
-				$this->load->view('header', $data);
-				$this->load->view($view);
-				$this->load->view('footer');
 			}
 		}
 	}
