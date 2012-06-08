@@ -137,9 +137,9 @@ class Teacher extends User {
 	
 	public function group_admin($data = array())
 	{
+		$data = $this->Group_model->get_all_teams_info();
 		$data['title'] = "小组信息";
 		$data['css'] = 'typeBigMetro';
-		$data['groups'] = $this->Group_model->get_all_group()->result_array();
 		$this->load->view('header', $data);
 		$this->load->view('manageGrp_view', $data);
 		$this->load->view('footer');

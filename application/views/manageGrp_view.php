@@ -4,8 +4,8 @@
     <div class="metroSqu_grpInfo colord">
         <div class="metroText">
             <div textType="title" >小组统计信息</div>
-            	已创建小组数：<?= $group_number ?>
-            	课程人数：<?= $stu_number ?>
+            	已创建小组数：<?= $group_number ?> <br/>
+            	课程人数：<?= $stu_number ?> <br/>
             	未组队人数：<?= $stu_number - $grouped_stu_number ?>
         </div>        
     </div>

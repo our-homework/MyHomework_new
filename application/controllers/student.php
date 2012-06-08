@@ -22,9 +22,13 @@ class Student extends User {
 	}
 	
 	public function show_my_team() {
+		$result = $this->Group_model->get_group_info_by_uid($this->session->userdata('uid'));
+		if ($result !== 0)
+			$data = $result;
+		$data['uid'] = $this->session->userdata('uid');
 		$data['css'] = 'typeTextMetro';
 		$this->load->view('header', $data);
-  		$this->load->view('myTm_view');
+  		$this->load->view('myTm_view', $data);
 		$this->load->view('footer');
 	}
 	
@@ -62,10 +66,10 @@ class Student extends User {
 			$data['errorMsg'] = '小组名不能为空'; 
 			$this->create_team($data);
 		} else {
-			$data['group_name'] = $this->input->post('group_name');
-			$data['leader_id'] = $this->session->userdata('uid');
-			if (!$this->Group_model->add_group($data)) {
-				$data['errMsg'] = '小组名重复';
+			$info['group_name'] = $this->input->post('group_name');
+			$info['leader_id'] = $this->session->userdata('uid');
+			if (!$this->Group_model->add_group($info)) {
+				$data['errorMsg'] = '你已创建或加入小组，无法创建小组';
 				$this->create_team($data);
 			} else {
 				redirect('student/join_team');
