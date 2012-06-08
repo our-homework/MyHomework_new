@@ -1,0 +1,156 @@
+body {
+	margin: 0;
+	padding: 0;
+	background-color:#128023;
+	font-size: 11pt;
+	color:#FFF;
+}
+
+a {
+	color:#fff;
+	text-decoration:none;
+}
+
+#main {
+	padding-left:120px;
+}
+
+.title {
+	height:60px;
+	font-size:42pt;
+	font-family:Verdana;
+	font-weight:400;
+	position:relative;
+	margin-top:5%;
+	margin-bottom:20px;
+	margin-right:10%;
+
+}
+
+.subTitle {
+	margin:0 0 20px 0;
+	height:30px;
+	font-size:20pt;
+	font-weight:100;
+}
+
+.metroWrapper {
+	width:270px;
+	display:inline-block;
+	margin-right:6%;
+	float:left;
+}
+
+.metroSquWrapper {
+	width:100%;
+}
+
+.metroSqu {
+	margin:0px 10px 10px 0px;
+	height:250px;
+	width:250px;
+	display:inline-block;
+	float:left;
+}	
+
+.metro {
+	margin:0px 10px 10px 0px;
+	height:120px;
+	width:120px;
+	display:inline-block;
+	float:left;
+}	
+
+.metroRec {
+	margin:0px 10px 10px 0px;
+	height:120px;
+	width:250px;
+	display:inline-block;
+	float:left;
+}	
+
+
+.metroButton {
+	font-size:20pt;
+	text-align:center;	
+	line-height:118px;
+}
+
+.clear {
+	clear: both;
+}
+
+.textWrapper {
+	float:left;
+	width:68%;
+	height:530px;
+	display:inline-block;
+	overflow:auto;
+	margin-right:10px;
+	margin-left:-10px;
+}
+
+.textWrapper table{
+	width:67%;
+	text-align:left;
+}
+
+.metroText {
+	height:98px;
+	margin:10px 10px 10px 10px;
+}
+
+[textType = "title"] {
+	font-size:15pt;
+	font-weight:600;
+	padding: 1px 0 1px 0;
+}
+
+
+.userInfo {
+	position:absolute;
+	top:60px;
+	right:50px;
+	width:160px;
+	height:40px;
+	
+
+}
+.userImage_info {
+	width:38px;
+	height:38px;
+	background-color:#FFF;
+	display:inline-block;
+}
+.userName_info {
+	position:relative;
+	top:0;
+	width:110px;
+	height:40px;
+	font-size:20pt;
+	font-weight:400;
+	padding-bottom:4px;
+	text-align:right;
+	display:inline-block;
+}
+
+#backButton {
+	height:40px;
+	width:40px;
+	position:fixed;
+	left:70px;
+	top:70px;;
+	}
+
+.colora {background-color:#0096A9;}
+.colorb {background-color:#A201AA;}
+.colorc {background-color:#5B3AB5;}
+.colord {background-color:#2D88EF;}
+.colore {background-color:#0A58C1;}
+.colorf {background-color:#DA542C;}
+.colorg {background-color:#B81D46;}
+.colorh {background-color:#00A21B;}
+.colori {background-color:#009318;}
+.colorj {background-color:#2D88F0;}
+.colork {background-color:#5F3BBA;}
+.colorl {background-color:#6BB61D;}

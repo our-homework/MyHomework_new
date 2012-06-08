@@ -1,0 +1,30 @@
+.groupInfo {
+	position:fixed;
+}
+
+
+
+.metroSqu_grpInfo 
+{
+	height:380px;
+	width:250px;
+	display:inline-block; 	
+}
+
+	
+#metroWrapper_grpInfoFixed {
+	height:520px;
+	width:250px;
+	position:fixed;
+	top:108px;
+	margin-top:5%;
+	
+}
+
+.metroWrapper_grpInfo
+{
+	margin-left: 260px;
+	width:800px;
+	overflow:auto;
+	height:530px;
+}
