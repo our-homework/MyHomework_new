@@ -40,24 +40,19 @@ class User extends CI_Controller {
 				$this->index($data);
 			}
 			else {
-				$data['css'] = 'typeLittleMetro';
 				$user = $query->row();
 				$session['is_login'] = TRUE;
 				$session['user_name'] = $user->user_name;
 				$session['uid'] = $user->uid;
 				$session['role'] = $user->role;
-				$session['gourp_lock'] = $this->Group_model->is_lock();
+				$this->session->set_userdata($session);	
+				//$session['gourp_lock'] = $this->Group_model->is_lock();
 				if ($session['role'] == 'ta' || $session['role'] == 'teacher'){
-					$view = 'tchHm_view';
+					redirect('teacher');
 				}
 				else {
-					$view = 'stuHm_view';
-					$data['homeworks'] = $this->Homework_model->get_homeworks_by_uid($user->uid)->result_array();
+					redirect('student');
 				}
-				$this->session->set_userdata($session);	
-				$this->load->view('header', $data);
-				$this->load->view($view);
-				$this->load->view('footer');
 			}
 		}
 	}
@@ -65,6 +60,6 @@ class User extends CI_Controller {
 	public function logout()
 	{
 		$this->session->unset_userdata('is_login');
-		$this->index();
+		redirect(base_url());
 	}
 }

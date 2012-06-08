@@ -59,7 +59,7 @@ class Student extends User {
 				$data['errMsg'] = '小组名重复';
 				$this->create_team($data);
 			} else {
-				$this->join_team();
+				redirect('student/join_team');
 			}
 		}
 	}
@@ -75,11 +75,7 @@ class Student extends User {
 				mkdir('homework_upload/'.$hid, 0777);
 			move_uploaded_file($_FILES['src']['tmp_name'], $src);
 		//	$this->Homewrok_model->upload_homework('src','link');
-			$data['homework'] = $this->Homework_model->get_homework_by_hid($hid)->row();
-			$data['css'] = 'typeTextMetro';
-			$this->load->view('header', $data);
-			$this->load->view('detailedHw_stu_view', $data);
-			$this->load->view('footer');
+			redirect('homework/show_hw_detail');
 		 }
 	}
 }

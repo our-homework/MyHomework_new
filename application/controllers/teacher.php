@@ -53,7 +53,7 @@ class Teacher extends User {
 			$this->add_user($data);
 		}
 		else {
-			$this->user_admin();
+			redirect('/teacher/user_admin');
 		}
 	}
 	
@@ -80,7 +80,7 @@ class Teacher extends User {
 		for ($i = 3; $i <= sizeof($delete_uids); $i++) {
 			$this->Teacher_model->delete_user_by_uid($delete_uids[$i]);
 		}
-		$this->user_admin();
+		redirect('/teacher/user_admin');
 	}
 	
 	public function publishHw() {
@@ -101,7 +101,7 @@ class Teacher extends User {
 			$this->publishHw($data);
 		}
 		else {
-			$this->hw_history();
+			redirect('homework/hw_history');
 		}
 	}
 	
@@ -134,7 +134,7 @@ class Teacher extends User {
 			$this->Group_model->unlock_group();
 		else 
 			$this->Group_model->lock_group();
-		$this->index();
+		redirect('teacher');
 	}
 	
 	public function group_admin($data = array())
