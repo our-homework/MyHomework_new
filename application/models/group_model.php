@@ -35,9 +35,13 @@ class Group_model extends CI_Model
 		return $this->db->get($table);
 	}
 	
+	public function get_all_group($table = "group") 
+	{
+		return $this->db->get($table);
+	}
 	
     function add_group($data, $table = 'group') {
-        $data['create_date'] = date("Y-m-d");
+        //$data['create_date'] = date("Y-m-d");
         if (!$this->db->insert($table, $data))
             return false;
         return true;

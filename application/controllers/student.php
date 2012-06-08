@@ -27,28 +27,41 @@ class Student extends User {
 		$this->load->view('footer');
 	}
 	
-	public function create_team() {
+	public function create_team($data = array()) {
 		$data['css'] = 'typeAlert';
 		$this->load->view('header', $data);
-  		$this->load->view('createTm_view');
+  		$this->load->view('createTm_view', $data);
 		$this->load->view('footer');
 	}
 	
 	public function join_team() {
 		$data['css'] = 'typeBigMetro';
 		$data['title'] = "选择小组";
+		
+		$data['groups'] = $this->Group_model->get_all_group()->result_array();
+		
 		$this->load->view('header', $data);
   		$this->load->view('manageGrp_view', $data);
-	}
-	
-	function show_hw_detail($hid = '')
-	{
-		$hid = $this->uri->segment(3, $hid);
-		$data['homework'] = $this->Homework_model->get_homework_by_hid($hid)->row();
-		$data['css'] = 'typeTextMetro';
-		$this->load->view('header', $data);
-  		$this->load->view('detailedHw_stu_view', $data);
 		$this->load->view('footer');
+	}
+
+	public function create_team_check() {
+		$this->form_validation->set_rules('group_name', 'group_name', 'required');
+		
+		if ($this->form_validation->run() === FALSE) 
+		{
+			$data['errorMsg'] = '小组名不能为空'; 
+			$this->create_team($data);
+		} else {
+			$data['group_name'] = $this->input->post('group_name');
+			$data['leader_id'] = $this->session->userdata('uid');
+			if (!$this->Group_model->add_group($data)) {
+				$data['errMsg'] = '小组名重复';
+				$this->create_team($data);
+			} else {
+				$this->join_team();
+			}
+		}
 	}
 	
 	function upload_hw()

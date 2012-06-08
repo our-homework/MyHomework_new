@@ -7,7 +7,7 @@
 			if (isset($homeworks)) {
 				foreach ($homeworks as $hw) {
 				?>
-				<a href="<?= site_url('student/show_hw_detail').'/'.$hw['hid']?>">
+				<a href="<?= site_url('homework/show_hw_detail').'/'.$hw['hid']?>">
             	<div class="metro colora">
         			<div class="metroText">
 	        			<div textType="title" ><?= $hw['title']?></div>

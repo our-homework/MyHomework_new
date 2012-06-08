@@ -8,7 +8,7 @@ include_once 'User.php';
 class Teacher extends User {
 	function __construct() {
         parent::__construct();
-		$this->load->model(array('Homework_model','Teacher_model'));
+		$this->load->model(array('Homework_model','Teacher_model', 'Group_model'));
 	}
 	
 	public function index()
@@ -141,8 +141,9 @@ class Teacher extends User {
 	{
 		$data['title'] = "小组信息";
 		$data['css'] = 'typeBigMetro';
+		$data['groups'] = $this->Group_model->get_all_group()->result_array();
 		$this->load->view('header', $data);
-		$this->load->view('manageGrp_view');
+		$this->load->view('manageGrp_view', $data);
 		$this->load->view('footer');
 	}
 }
