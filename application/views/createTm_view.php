@@ -7,8 +7,8 @@
     <label><input type="text" name='group_name' value="<?= set_value('group_name'); ?>"/></label>
 	<div id="button">
 		<input type="submit" class="button" value="创建" />
-		<input type="reset" class="button" value="取消" />
+		<input type="reset" class="button" value="取消" onclick="goto" />
 	</div>
-	<div id="errMsg"><?= isset($errorMsg) ? $errorMsg : '' ?></div>
-	<?= form_close(); ?>
+	<div id="errMsg"><?= isset($errorMsg) ? $errorMsg : '' ?></div>	
+	<?= form_close(); ?>	
 </div>
