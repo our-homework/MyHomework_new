@@ -15,6 +15,24 @@ class Group_model extends CI_Model
 		return $this->db->get($table)->row()->is_lock;
 	}
 	
+	function add_stu_to_group($data, $table = 'group_user')
+	{
+		$this->db->where('uid', $data['uid']);
+		if ($this->db->get($table)->num_rows() > 0)
+			return false;
+		if (!$this->db->insert($table, $data))
+			return false;
+		return true;
+	}
+	
+	function del_stu_in_group($data, $table = 'group_user')
+	{
+		$this->db->where('uid', $data['uid']);
+		if (!$this->db->delete($table))
+			return false;
+		return true;
+	}
+	
 	function get_grouped_stu_number($table = 'group_user')
 	{
 		return $this->db->get($table)->num_rows();
@@ -23,6 +41,15 @@ class Group_model extends CI_Model
 	function get_members_uid_by_gid($gid, $table = 'group_user') {
 		$this->db->where('gid', $gid);
 		return $this->db->get($table);
+	}
+	
+	function get_gid_by_uid($uid, $table = 'group_user')
+	{
+		$this->db->where('uid', $uid);
+		$query = $this->db->get($table);
+		if ($query->num_rows() <= 0)
+			return -1;
+		return $query->row()->gid;
 	}
 	
 	function get_group_by_uid($uid, $table = 'group_user')
@@ -34,13 +61,15 @@ class Group_model extends CI_Model
 		$gid = $query->row()->gid;
 		return $this->get_group_by_gid($gid);
 	}
-	
+	/*
 	function add_group_user_item($data, $table = 'group_user')
 	{
 		if (!$this->db->insert($table, $data))
 			return false;
 		return true;
 	}
+	 * 
+	 */
 	
 	function lock_group($table = 'lockgroup')
 	{
@@ -56,12 +85,36 @@ class Group_model extends CI_Model
 		return $this->db->update($table, $data);
 	}
 	
+	function group_leader_transfer_to($uid, $table = 'group')
+	{
+		$gid = $this->get_gid_by_uid($uid);
+		$query = $this->get_group_by_gid($gid);
+		if ($query->num_rows() <= 0)
+			return false;
+		$cur_uid = $this->session->userdata('uid');
+		if ($cur_uid != $query->row()->leader_id)
+			return false;
+		$data['gid'] = $gid;
+		$data['group_name'] = $query->row()->group_name;
+		$data['leader_id'] = $uid;
+		$this->db->where('gid', $gid);
+		if (!$this->db->update($table, $data))
+			return false;
+		return true;
+	}
+	
 	function get_group_info_by_uid($uid)
 	{
 		$query = $this->get_group_by_uid($uid);
 		if ($query->num_rows() <= 0)
 			return 0;
-		$group = $query->row();
+		return $this->get_group_info_by_gid($query->row()->gid);
+	}
+	
+	function get_group_info_by_gid($gid)
+	{
+		$group = $this->get_group_by_gid($gid)->row();
+		$data['gid'] = $gid;
 		$data['group_name'] = $group->group_name;
 		$data['leader_id'] = $group->leader_id;
 		$members_uid = $this->get_members_uid_by_gid($group->gid)->result_array();
@@ -82,7 +135,7 @@ class Group_model extends CI_Model
 		return $this->db->get($table);
 	}
 	
-	public function get_all_teams_info() 
+	public function get_all_groups_info() 
 	{
 		$return_data['groups'] = $this->get_all_groups()->result_array();
 		$return_data['uid2user_name'] = array('key' => 'value');
@@ -120,7 +173,7 @@ class Group_model extends CI_Model
 		$gid = $this->get_gid_by_create_info($data);
 		$info['gid'] = $gid;
 		$info['uid'] = $this->session->userdata('uid');
-		if (!$this->add_group_user_item($info))
+		if (!$this->add_stu_to_group($info))
 			return false;
         return true;
     }

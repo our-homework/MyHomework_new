@@ -22,11 +22,21 @@ class Teacher extends User {
 	
 	public function user_admin($data = array())
 	{
-		if ($this->session->userdata('role') == 'ta')
+		if ($this->session->userdata('role') == 'ta') 
 			$data['users'] = $this->Teacher_model->get_all_studnets()->result_array();
 		else if ($this->session->userdata('role') == 'teacher')
 			$data['users'] = $this->Teacher_model->get_all_tas_students()->result_array();
 
+		$index = 0;
+		foreach ($data['users'] as $user) {	
+			if ($user['role'] == 'student') {
+				$gid = $this->Group_model->get_gid_by_uid($user['uid']);
+				if ($gid != -1)
+					$data['users'][$index]['group_name'] = $this->Group_model->get_group_by_gid($gid)->row()->group_name;
+			}
+			$index++;
+		}
+		//print_r($data['users']);
 		$data['css'] = 'typeTextMetro';
 		$this->load->view('header', $data);
 		$this->load->view('manageUsr_view');
@@ -137,11 +147,11 @@ class Teacher extends User {
 	
 	public function group_admin($data = array())
 	{
-		$data = $this->Group_model->get_all_teams_info();
+		$data = $this->Group_model->get_all_groups_info();
 		$data['title'] = "小组信息";
 		$data['css'] = 'typeBigMetro';
 		$this->load->view('header', $data);
-		$this->load->view('manageGrp_view', $data);
+		$this->load->view('manageGrp_view');
 		$this->load->view('footer');
 	}
 }

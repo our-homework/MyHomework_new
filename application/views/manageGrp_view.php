@@ -16,7 +16,7 @@
 			$i = 0;
 			foreach ($groups as $group) {
 		?>
-		<a href="<?= site_url('student/join_team_check') ?>">
+		<a href="<?= site_url('student/select_group').'/'.$group['gid'] ?>">
             <div class="<?= "metroSqu color".(chr($count))?>" >
                 <div class="metroText">
                     <div textType="title" >Team Name: <?= $group['group_name'] ?></div>
