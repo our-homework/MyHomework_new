@@ -70,6 +70,12 @@ class Homework_model extends CI_Model
 		return $this->db->get();
 	} 
 	
+	public function get_handin_users_by_hid($hid, $table= 'hw_user')
+	{
+		$this->db->where('hid', $hid);
+		return $this->db->get($table);
+	}
+	
 	public function get_homeworks_by_uid($uid, $table = 'hw_user')
 	{
 		$this->db->where('uid', $uid);
@@ -102,6 +108,29 @@ class Homework_model extends CI_Model
 		}
 	}
 	
+	public function get_excellent_hw($hid, $table = 'hw_user')
+	{
+		$this->db->where('hid', $hid);
+		$this->db->join('user', 'user.uid = hw_user.uid');
+		$this->db->order_by('grade','desc');
+		$this->db->limit(3);
+		return $this->db->get($table);
+	}
+	
+	public function get_others_hw($hid, $uid, $gid, $table = 'hw_user')
+	{
+		$this->db->where('hid', $hid);
+		$this->db->order_by('grade', 'desc');
+		$this->db->limit($this->db->count_all_results() - 3, 3);
+		$this->db->where('uid!=', $uid);
+		$this->db->select('*');
+		$this->db->from($table);
+		$this->db->join('group_user', 'hw_user.uid = group_user.uid');
+		$this->db->where('gid!=', $gid);
+		$this->db->join('user', 'hw_user.uid = user.uid');
+		return $this->db->get();
+	}
+	
 	public function upload_homework($hid, $uid, $src, $table='hw_user')
 	{
 		$this->db->where('uid', $uid);
@@ -122,6 +151,13 @@ class Homework_model extends CI_Model
 			$this->db->where('hid', $hid);
 			$this->db->update($table, $data);
 		}
+	}
+	
+	public function update_hw_user_by_uid($hid, $uid, $data, $table = 'hw_user')
+	{
+		$this->db->where('uid', $uid);
+		$this->db->where('hid', $hid);
+		$this->db->update($table, $data);
 	}
 }
 

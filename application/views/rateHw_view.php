@@ -1,6 +1,6 @@
 <div id="main">
 	<div class="title">Homework1</div>
-
+	<?= form_open('teacher/update_grade_check'.'/'.$hid)?>
 	<div class="textWrapper">
     	<table> 
         <form>
@@ -43,7 +43,7 @@
 						</td>
 		                <td><?= $user['group_rank']?></td>
 		                <td><?= $user['grade']?></td>
-		                <td><input type="text" name="s"></td>
+		                <td><input type="text" name="<?= $user['uid']?>"></td>
 					</tr> 
 					<?
 					}

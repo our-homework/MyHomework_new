@@ -1,5 +1,5 @@
 .hw_info {
-	width:60%;
+	width:40%;
 	display:inline-block;
 	float:left
 }
@@ -7,8 +7,9 @@
 .others {
 	display:inline-block;
 	float:left;
+	width:50%
 }
-/*
+
 input[type=file]{
 	margin-right: 20px;
 	background-color:#000;
@@ -18,7 +19,7 @@ input[type=file]{
 	cursor:pointer;
 	
 }
-*/
+
 input[type=submit] {
 	cursor:pointer;
 	border:hidden;
@@ -28,4 +29,13 @@ input[type=submit] {
 table
 {
 	width:100%;
+}
+
+.metroWrapper_hw {
+	width:400px;
+	display:inline-block;
+	margin-right:6%;
+	float:left;
+	overflow:hidden;
+	height:100%;
 }

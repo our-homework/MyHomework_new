@@ -148,14 +148,29 @@ class Teacher extends User {
 		$this->publishHw($data);
 	}
 	
-	public  function rate_hw()
+	public function rate_hw($hid = '')
 	{
-		$hid = $this->uri->segment(3);
+		$hid = $this->uri->segment(3, $hid);
+		$data['hid'] = $hid;
 		$data['users'] = $this->Homework_model->get_all_students_hw_by_hid($hid)->result_array();
 		$data['css'] = 'typeTextMetro';
 		$this->load->view('header', $data);
   		$this->load->view('rateHw_view', $data);
 		$this->load->view('footer');
+	}
+	
+	public function update_grade_check()
+	{
+		$hid = $this->uri->segment(3);
+		$users = $this->Homework_model->get_handin_users_by_hid($hid)->result_array();
+		for ($i = 0; $i < count($users); $i++){
+			if ($_POST[$users[$i]['uid']] != NULL) {
+				$users[$i]['grade'] = $_POST[$users[$i]['uid']];
+				$this->Homework_model->update_hw_user_by_uid($users[$i]['hid'], $users[$i]['uid'], $users[$i]);
+			}
+		}
+		
+		redirect('teacher/rate_hw'.'/'.$hid);
 	}
 	
 	public function triggle_group_lock()

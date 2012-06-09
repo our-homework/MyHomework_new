@@ -22,6 +22,10 @@ class Homework extends CI_Controller {
 		else {
 			$data['homework'] = $this->Homework_model->get_homework_by_uid(
 									$data['hid'],$this->session->userdata('uid'));
+									
+			$data['excellent_hws'] = $this->Homework_model->get_excellent_hw($data['homework']->hid)->result_array();
+			//$data['others_hws'] = $this->Homework_model->get_others_hw($data['homework']->hid, 
+												//			$this->session->userdata('uid'), $this->session->userdata('gid'))->result_array();
 			$view = 'detailedHw_stu_view';
 		}
 		if (isset($data['homework'])) 

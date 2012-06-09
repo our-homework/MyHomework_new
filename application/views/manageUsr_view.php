@@ -38,9 +38,7 @@
                 </div>
             </div>
         </a>
-		<a href="<?= site_url('teacher/delete_user')?>">
 		<input type="submit" class="metroRec colorf metroButton" value="删除" />
-		</a>
 	</div>
 	<?= form_close();?>
 </div>
