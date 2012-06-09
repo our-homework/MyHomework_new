@@ -76,3 +76,14 @@ textarea {
 	height:100px;
 }
 
+select.rank{
+	width:100px;
+
+}
+
+.rank{
+	width:100%;
+	text-align:left;
+}
+
+

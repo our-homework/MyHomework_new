@@ -1,5 +1,5 @@
 <?php
-  header('Content-Type: text/html; charset=utf-8'); //设置全局编码
+
 /*
  *---------------------------------------------------------------
  * APPLICATION ENVIRONMENT
@@ -35,7 +35,7 @@ if (defined('ENVIRONMENT'))
 		case 'development':
 			error_reporting(E_ALL);
 		break;
-
+	
 		case 'testing':
 		case 'production':
 			error_reporting(0);

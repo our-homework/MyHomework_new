@@ -1,12 +1,12 @@
 <div id="wrap">
-	<div id="title_login">发布作业</div>
-	<?= form_open("teacher/publishHw_check") ?>
+	<div id="title_login"><?= $title?></div>
+	<?= form_open('teacher/publishHw_check'.'/'.(isset($homework) ? $homework->hid : '0')) ?>
   	<div class="subTitle_login"  style="display:inline-block">作业名  </div>
-	<label><input type="text" class="publish" name="name" value="<?= set_value('user_name'); ?>"/></label>
+	<label><input type="text" class="publish" name="name" value="<?= isset($homework) ? $homework->title : ''?>"/></label>
     <div class="subTitle_login"  style="display:inline-block">截止日期  </div>
-	<label><input type="text" class="publish" name="deadline" value="<?= set_value('password'); ?>"/></label>
+	<label><input type="text" class="publish" name="deadline" value="<?= isset($homework) ? $homework->deadline : '' ?>"/></label>
 	<div class="subTitle_login">要求</div>
-	<label><textarea></textarea></label>
+	<label><textarea name="request" rows="8" cols="40"><?= isset($homework) ? $homework->content : ''?></textarea></label>
 
 	<div id="button">
 		<input type="submit" class="button" value="发布" />

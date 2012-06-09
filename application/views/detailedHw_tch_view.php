@@ -8,13 +8,24 @@
 	<div class="textWrapper">
 	</div>
 	<div class="metroWrapper">
-		<a href="#">
+		<a href="<?= site_url('teacher/edit_hw'.'/'.$homework->hid)?>">
             <div class="metroRec colorg">
             	<div class="metroButton" >修改
                 </div>
             </div>
         </a>
-		<input type="submit" class="metroRec colorf metroButton" value="评审" />
+        <?php if (isset($reach_deadline)) {
+        	if ($reach_deadline == TRUE) {
+        	?>
+        	<a href="<?= site_url('teacher/rate_hw'.'/'.$homework->hid)?>">
+            <div class="metroRec colorf">
+            	<div class="metroButton" >评审
+                </div>
+            </div>
+        </a>
+        	<?php
+			}
+        }?>
 	</div>
 	
 </div>

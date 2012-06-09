@@ -1,14 +1,22 @@
 <div id="main">
 	<div class="title"><?= $title?></div>
 
-    <div class="metroSqu_grpInfo colord">
-        <div class="metroText">
+	 <div id="metroWrapper_grpInfoFixed" >
+		<a href="<?= site_url('teacher/triggle_group_lock')?>">
+	        <div class="metroRec colorb">
+	            <div class="metroButton"><?= ($this->session->userdata('group_lock') == TRUE) ? '解除锁定' : '锁定分组'?>
+	            </div>          
+	        </div>
+	    </a>
+	    <div class="metroSqu_grpInfo colord">
+	        <div class="metroText">
             <div textType="title" >小组统计信息</div>
             	已创建小组数：<?= $group_number ?> <br/>
             	课程人数：<?= $stu_number ?> <br/>
             	未组队人数：<?= $stu_number - $grouped_stu_number ?>
-        </div>        
-    </div>
+	        </div>        
+	    </div>
+	</div>
 	<div class="metroWrapper_grpInfo">
 		<?php 
 			$count = 97;

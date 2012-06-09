@@ -46,7 +46,6 @@ class User extends CI_Controller {
 				$session['uid'] = $user->uid;
 				$session['role'] = $user->role;
 				$this->session->set_userdata($session);	
-				//$session['gourp_lock'] = $this->Group_model->is_lock();
 				if ($session['role'] == 'ta' || $session['role'] == 'teacher'){
 					redirect('teacher');
 				}

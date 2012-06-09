@@ -21,7 +21,7 @@ a {
 	font-family:Verdana;
 	font-weight:400;
 	position:relative;
-	margin-top:5%;
+	margin-top:2%;
 	margin-bottom:20px;
 	margin-right:10%;
 
@@ -39,6 +39,7 @@ a {
 	display:inline-block;
 	margin-right:6%;
 	float:left;
+	overflow:hidden;
 }
 
 .metroSquWrapper {
@@ -58,7 +59,7 @@ a {
 	height:120px;
 	width:120px;
 	display:inline-block;
-	float:left;
+	float:left;	
 }	
 
 .metroRec {
@@ -105,11 +106,16 @@ a {
 	font-weight:600;
 	padding: 1px 0 1px 0;
 }
+[textType = "text"] {
+	font-size:11pt;
+	font-weight:400;
+	line-height:27px;
+}
 
 
 .userInfo {
 	position:absolute;
-	top:60px;
+	top:40px;
 	right:50px;
 	width:160px;
 	height:40px;
@@ -139,8 +145,12 @@ a {
 	width:40px;
 	position:fixed;
 	left:70px;
-	top:70px;
+	top:40px;
 	}
+
+[onclick] {
+	cursor:pointer;
+}
 
 .colora {background-color:#0096A9;}
 .colorb {background-color:#A201AA;}

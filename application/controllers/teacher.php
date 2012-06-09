@@ -14,6 +14,7 @@ class Teacher extends User {
 	public function index()
 	{
 		$this->session->set_userdata('group_lock', $this->Group_model->is_lock());
+		$data['homeworks'] = $this->Homework_model->get_all_homeworks()->result_array();
 		$data['css'] = 'typeLittleMetro';
 		$this->load->view('header', $data);
 		$this->load->view('tchHm_view');
@@ -63,7 +64,7 @@ class Teacher extends User {
 			$this->add_user($data);
 		}
 		else {
-			redirect('/teacher/user_admin');
+			redirect('teacher/user_admin');
 		}
 	}
 	
@@ -90,40 +91,53 @@ class Teacher extends User {
 		for ($i = 3; $i <= sizeof($delete_uids); $i++) {
 			$this->Teacher_model->delete_user_by_uid($delete_uids[$i]);
 		}
-		redirect('/teacher/user_admin');
+		redirect('teacher/user_admin');
 	}
 	
-	public function publishHw() {
+	public function publishHw($data = array()) {
+		isset($data['title']) ? : $data['title'] = '发布作业';
 		$data['css'] = 'typeAlert';
 		$this->load->view("header", $data);
-		$this->load->view("publishHw_view");
+		$this->load->view("publishHw_view", $data);
 		$this->load->view("footer");
 	}
 	
 	public function publishHw_check() {
+		$hid = $this->uri->segment(3);
 		$data['title'] = $this->input->post('name');
 		$data['deadline'] = $this->input->post('deadline');
 		$data['content'] = $this->input->post('request');
 		$data['author'] = $this->session->userdata("user_name");
 		
-		if (!$this->Homework_model->add_homework($data)) {
-			$data['errorMsg'] = 'unknown error！';
-			$this->publishHw($data);
+		if ($hid != '0') {
+			if (!$this->Homework_model->update_homework($hid, $data)) {
+				$data['errorMsg'] = '修改失败！';
+				$this->publishHw($data);
+			}
+			else {
+				redirect('teacher/hw_history');
+			}
 		}
 		else {
-			redirect('homework/hw_history');
+			if(!$this->Homework_model->add_homework($data)) {
+				$data['errorMsg'] = 'unknown error！';
+				$this->publishHw($data);
+			}
+			else {
+				redirect('teacher/hw_history');
+			}
 		}
 	}
 	
 	public function hw_history() {
 		//$this->load
 		$data['css'] = 'typeBigMetro';
-		$data['homeworks'] = $this->Homework_model->get_all_homework()->result_array();
+		$data['homeworks'] = $this->Homework_model->get_all_homeworks()->result_array();
 		$this->load->view('header', $data);
 		$this->load->view('groupedHw_view', $data);
 		$this->load->view('footer');
 	}
-	
+	/*
 	public function show_hw_detail() 
 	{
 		$data['hid'] = $this->uri->segment(3);
@@ -134,7 +148,43 @@ class Teacher extends User {
 		$this->load->view('header', $data);
 		$this->load->view('detailedHw_tch_view', $data);
 		$this->load->view('footer');
+<<<<<<< HEAD
 	}	
+=======
+	}*/
+	
+	public function edit_hw()
+	{
+		$hid = $this->uri->segment(3);
+		$data['title'] = '修改作业';
+		$data['homework'] = $this->Homework_model->get_homework_by_hid($hid)->row();
+		$this->publishHw($data);
+	}
+	
+	public function rate_hw($hid = '')
+	{
+		$hid = $this->uri->segment(3, $hid);
+		$data['hid'] = $hid;
+		$data['users'] = $this->Homework_model->get_all_students_hw_by_hid($hid)->result_array();
+		$data['css'] = 'typeTextMetro';
+		$this->load->view('header', $data);
+  		$this->load->view('rateHw_view', $data);
+		$this->load->view('footer');
+	}
+	
+	public function update_grade_check()
+	{
+		$hid = $this->uri->segment(3);
+		$users = $this->Homework_model->get_handin_users_by_hid($hid)->result_array();
+		for ($i = 0; $i < count($users); $i++){
+			if ($_POST[$users[$i]['uid']] != NULL) {
+				$users[$i]['grade'] = $_POST[$users[$i]['uid']];
+				$this->Homework_model->update_hw_user_by_uid($users[$i]['hid'], $users[$i]['uid'], $users[$i]);
+			}
+		}
+		
+		redirect('teacher/rate_hw'.'/'.$hid);
+	}
 	
 	public function triggle_group_lock()
 	{
@@ -142,7 +192,7 @@ class Teacher extends User {
 			$this->Group_model->unlock_group();
 		else 
 			$this->Group_model->lock_group();
-		redirect('teacher');
+		redirect('teacher/group_admin');
 	}
 	
 	public function group_admin($data = array())
@@ -150,6 +200,9 @@ class Teacher extends User {
 		$data = $this->Group_model->get_all_groups_info();
 		$data['title'] = "小组信息";
 		$data['css'] = 'typeBigMetro';
+
+		$this->session->set_userdata('group_lock', $this->Group_model->is_lock());
+		$data['groups'] = $this->Group_model->get_all_group()->result_array();
 		$this->load->view('header', $data);
 		$this->load->view('manageGrp_view');
 		$this->load->view('footer');
