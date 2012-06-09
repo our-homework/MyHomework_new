@@ -10,6 +10,7 @@
                 <th>学号</th>
                 <th>角色</th>	
                 <?php 
+                if (!$this->Group_model->is_lock())
 		        	if (isset($leader_id) && $uid === $leader_id) { 
                 ?>
                 <th>选择组长</th>
@@ -27,6 +28,7 @@
 				<td><?= $key ?></td>
 				<td><?= ($key === $leader_id) ? "组长":"组员" ?></td>
 				<?php 
+				if (!$this->Group_model->is_lock())
 		        	if (isset($leader_id) && $uid === $leader_id) { 
                 ?>
                 <td><input type='radio' name='leader' value=<?= $key?>></td>
@@ -42,6 +44,10 @@
         </table>
 	</div>
 	<div class="metroWrapper">
+		<?php 
+		if (!$this->Group_model->is_lock())
+			if ($this->session->userdata('role') == 'student') {
+		?>
 		<a href="
 				<?php
 					if (array_key_exists($uid, $members))
@@ -57,7 +63,9 @@
                 <div><?= isset($join_group_errorMsg)?$join_group_errorMsg:'' ?></div>
             </div>
         </a>
-        <?php 
+        <?php
+		} 
+        if (!$this->Group_model->is_lock())
         	if (isset($leader_id) && $uid === $leader_id) {
         ?>
 		<input type="submit" class="metroRec colorf metroButton" value="转移组长" />

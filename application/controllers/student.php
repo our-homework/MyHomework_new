@@ -17,9 +17,13 @@ class Student extends User {
 	{
 		$uid = $this->session->userdata('uid');
 		$gid = $this->Group_model->get_gid_by_uid($uid);
-		if ($gid !== -1)
+		if ($gid !== -1) {
 			$data['my_group_id'] = $gid;
-		$data['homeworks'] = $this->Homework_model->get_homeworks_by_uid($uid)->result_array();
+			$this->session->set_userdata('gid', $gid);
+		}
+		$query = $this->Homework_model->get_homeworks_by_uid($uid);
+		if (count($query) > 0)
+			$data['homeworks'] = $query;
 		$data['css'] = 'typeLittleMetro';
 		$this->load->view('header', $data);
 		$this->load->view('stuHm_view', $data);

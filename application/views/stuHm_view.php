@@ -46,6 +46,9 @@
         </a>
         <?php 
 			}
+			else {
+				$text = '查看小组';
+			}
 		?>
 		<a href="<?= site_url('student/join_group') ?>">
             <div class="metroRec colorl">

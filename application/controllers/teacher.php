@@ -202,7 +202,7 @@ class Teacher extends User {
 		$data['css'] = 'typeBigMetro';
 
 		$this->session->set_userdata('group_lock', $this->Group_model->is_lock());
-		$data['groups'] = $this->Group_model->get_all_group()->result_array();
+		$data['groups'] = $this->Group_model->get_all_groups()->result_array();
 		$this->load->view('header', $data);
 		$this->load->view('manageGrp_view');
 		$this->load->view('footer');
