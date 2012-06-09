@@ -58,22 +58,47 @@ class Homework_model extends CI_Model
         return true;
     }
 	
-	public function get_homeworks_by_uid($uid, $table = 'hw_user')
+	public function get_all_students_hw_by_hid($hid, $table = 'hw_user')
 	{
+		$this->db->where('hid', $hid);
 		$this->db->select('*');
 		$this->db->from($table);
-		$this->db->join('homework','hw_user.hid = homework.hid','right');
-		$this->db->where('uid', $uid);
-		$this->db->or_where('uid', NULL);
+		$this->db->join('group_user', 'hw_user.uid = group_user.uid');
+		$this->db->join('user', 'hw_user.uid = user.uid');
+		$this->db->order_by('gid', 'asc');
+		$this->db->order_by('group_rank', 'asc');
 		return $this->db->get();
+	} 
+	
+	public function get_homeworks_by_uid($uid, $table = 'hw_user')
+	{
+		$this->db->where('uid', $uid);
+		$users = $this->db->get($table)->result();
+		$homeworks = $this->db->get('homework')->result();
+		for ($i = 0; $i < count($homeworks); $i++) {
+			$homeworks[$i]->uid = NULL;
+			$homeworks[$i]->src = NULL;
+			$homeworks[$i]->grade = NULL;
+			$homeworks[$i]->group_rank = NULL;
+			for ($j = 0; $j < count($users); $j++) {
+				if ($users[$j]->hid == $homeworks[$i]->hid) {
+					$homeworks[$i]->uid = $users[$j]->uid;
+					$homeworks[$i]->src = $users[$j]->src;
+					$homeworks[$i]->grade = $users[$j]->grade;
+					$homeworks[$i]->group_rank = $users[$j]->group_rank;
+				}
+			}
+		}
+		return $homeworks;
 	}
 	
 	public function get_homework_by_uid($hid, $uid, $table = 'hw_user')
 	{
-		$query = $this->get_homeworks_by_uid($uid)->result();
+		$query = $this->get_homeworks_by_uid($uid);
 		foreach ($query as $hw) {
-			if ($hw->hid== $hid)
+			if ($hw->hid== $hid) {
 				return $hw;
+			}
 		}
 	}
 	

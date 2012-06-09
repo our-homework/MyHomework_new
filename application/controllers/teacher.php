@@ -127,7 +127,7 @@ class Teacher extends User {
 		$this->load->view('groupedHw_view', $data);
 		$this->load->view('footer');
 	}
-	
+	/*
 	public function show_hw_detail() 
 	{
 		$data['hid'] = $this->uri->segment(3);
@@ -138,7 +138,7 @@ class Teacher extends User {
 		$this->load->view('header', $data);
 		$this->load->view('detailedHw_tch_view', $data);
 		$this->load->view('footer');
-	}
+	}*/
 	
 	public function edit_hw()
 	{
@@ -146,6 +146,16 @@ class Teacher extends User {
 		$data['title'] = '修改作业';
 		$data['homework'] = $this->Homework_model->get_homework_by_hid($hid)->row();
 		$this->publishHw($data);
+	}
+	
+	public  function rate_hw()
+	{
+		$hid = $this->uri->segment(3);
+		$data['users'] = $this->Homework_model->get_all_students_hw_by_hid($hid)->result_array();
+		$data['css'] = 'typeTextMetro';
+		$this->load->view('header', $data);
+  		$this->load->view('rateHw_view', $data);
+		$this->load->view('footer');
 	}
 	
 	public function triggle_group_lock()

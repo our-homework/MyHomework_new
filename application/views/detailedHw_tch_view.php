@@ -17,7 +17,12 @@
         <?php if (isset($reach_deadline)) {
         	if ($reach_deadline == TRUE) {
         	?>
-        	<input type="submit" class="metroRec colorf metroButton" value="评审" />
+        	<a href="<?= site_url('teacher/rate_hw'.'/'.$homework->hid)?>">
+            <div class="metroRec colorf">
+            	<div class="metroButton" >评审
+                </div>
+            </div>
+        </a>
         	<?php
 			}
         }?>

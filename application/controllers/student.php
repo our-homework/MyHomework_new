@@ -14,7 +14,7 @@ class Student extends User {
 	
 	function index()
 	{
-		$data['homeworks'] = $this->Homework_model->get_homeworks_by_uid($this->session->userdata('uid'))->result_array();
+		$data['homeworks'] = $this->Homework_model->get_homeworks_by_uid($this->session->userdata('uid'));
 		$data['css'] = 'typeLittleMetro';
 		$this->load->view('header', $data);
 		$this->load->view('stuHm_view');

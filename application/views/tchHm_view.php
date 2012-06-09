@@ -20,20 +20,20 @@
         		<div class="metroButton">发布作业</div>
             </div>
         </a>
-		<a href="#">
+		<a href="<?=site_url('teacher/hw_history')?>">
             <div class="metro colorb">        		
         		<div class="metroButton">批改作业</div>
 
             </div>
         </a>
 	</div>
-		<div class="metroWrapper">
+		<div class="metroWrapper_hw">
 		<div class="subTitle">作业</div>
 		<?php
 			if (isset($homeworks)) {
 				foreach ($homeworks as $hw) {
 				?>
-				<a href="<?= site_url('teacher/show_hw_detail').'/'.$hw['hid']?>">
+				<a href="<?= site_url('homework/show_hw_detail').'/'.$hw['hid']?>">
             	<div class="metro colora">
         			<div class="metroText">
 	        			<div textType="title" ><?= $hw['title']?></div>
