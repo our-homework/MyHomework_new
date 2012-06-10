@@ -34,6 +34,7 @@
         </a>
         <?php 
 			}
+			else {
 		?>
         <?php
         	if (!$this->Group_model->is_lock()) {
@@ -46,9 +47,9 @@
         </a>
         <?php 
 			}
-			else {
-				$text = '查看小组';
-			}
+		}
+			if ($this->Group_model->is_lock() || isset($my_group_id))
+				$text  = '查看小组';
 		?>
 		<a href="<?= site_url('student/join_group') ?>">
             <div class="metroRec colorl">

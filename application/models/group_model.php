@@ -186,11 +186,22 @@ class Group_model extends CI_Model
 	}
 	
     function delete_group_by_gid($gid, $table = 'group') {
+		$uid = $this->get_group_by_gid($gid)->row()->leader_id;
         $this->db->where('gid', $gid);
         if (!$this->db->delete($table))
             return false;
+		if (!$this->delete_group_user_by_uid($uid))
+			return false;
         return true;
     }
+	
+	function delete_group_user_by_uid($uid, $table = 'group_user')
+	{
+		$this->db->where('uid', $uid);
+		if (!$this->db->delete($table))
+			return false;
+		return true;
+	}
 }
 
 ?>

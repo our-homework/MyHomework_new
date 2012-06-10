@@ -17,6 +17,7 @@ class Student extends User {
 	{
 		$uid = $this->session->userdata('uid');
 		$gid = $this->Group_model->get_gid_by_uid($uid);
+		
 		if ($gid !== -1) {
 			$data['my_group_id'] = $gid;
 			$this->session->set_userdata('gid', $gid);
@@ -81,10 +82,13 @@ class Student extends User {
 			return;
 		}
 		$to_uid = $this->input->post('leader');
+		if ($this->session->userdata('uid') == $to_uid)
+			goto ok;
 		if (!$this->Group_model->group_leader_transfer_to($to_uid))
 		{
 			echo 'something wrong';
 		} else {
+		ok:
 			redirect('student/show_my_group');
 		}
 	}
@@ -105,7 +109,13 @@ class Student extends User {
 	{
 		$data['gid'] = $gid;
 		$data['uid'] = $this->session->userdata('uid');
-		if ($this->Group_model->del_stu_in_group($data))
+		$leader_id = $this->Group_model->get_group_by_gid($gid)->row()->leader_id;
+		if ($data['uid'] == $leader_id)
+		{
+			if ($this->Group_model->delete_group_by_gid($gid))
+				redirect('student');
+		} 
+		else if ($this->Group_model->del_stu_in_group($data))
 			redirect('student/select_group'.'/'.$gid);
 	}
 
