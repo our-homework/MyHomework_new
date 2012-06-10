@@ -86,14 +86,18 @@ class Homework_model extends CI_Model
 			$homeworks[$i]->src = NULL;
 			$homeworks[$i]->grade = NULL;
 			$homeworks[$i]->group_rank = NULL;
+			$homeworks[$i]->rank = NULL;
 			for ($j = 0; $j < count($users); $j++) {
 				if ($users[$j]->hid == $homeworks[$i]->hid) {
 					$homeworks[$i]->uid = $users[$j]->uid;
 					$homeworks[$i]->src = $users[$j]->src;
 					$homeworks[$i]->grade = $users[$j]->grade;
 					$homeworks[$i]->group_rank = $users[$j]->group_rank;
+					if ($this->is_all_hws_rated($homeworks[$i]->hid)){
+						$homeworks[$i]->rank = $this->get_rank($homeworks[$i]->hid, $homeworks[$i]->uid);
+					}
 				}
-			}
+			}  
 		}
 		return $homeworks;
 	}
@@ -108,6 +112,18 @@ class Homework_model extends CI_Model
 		}
 	}
 	
+	public function get_member_hw($hid, $uid, $gid, $table='hw_user')
+	{
+		$this->db->where('hid', $hid);
+		$this->db->select('*');
+		$this->db->from($table);
+		$this->db->join('group_user', 'hw_user.uid = group_user.uid');
+		$this->db->join('user','user.uid = hw_user.uid');
+		$this->db->where('gid', $gid);
+		$this->db->where('hw_user.uid !=', $uid);
+		return $this->db->get();
+	}
+	
 	public function get_excellent_hw($hid, $table = 'hw_user')
 	{
 		$this->db->where('hid', $hid);
@@ -120,13 +136,11 @@ class Homework_model extends CI_Model
 	public function get_others_hw($hid, $uid, $gid, $table = 'hw_user')
 	{
 		$this->db->where('hid', $hid);
-		$this->db->order_by('grade', 'desc');
-		$this->db->limit($this->db->count_all_results() - 3, 3);
-		$this->db->where('uid!=', $uid);
+		$this->db->where('hw_user.uid !=', $uid);
 		$this->db->select('*');
 		$this->db->from($table);
 		$this->db->join('group_user', 'hw_user.uid = group_user.uid');
-		$this->db->where('gid!=', $gid);
+		$this->db->where('gid !=', $gid);
 		$this->db->join('user', 'hw_user.uid = user.uid');
 		return $this->db->get();
 	}
@@ -158,6 +172,56 @@ class Homework_model extends CI_Model
 		$this->db->where('uid', $uid);
 		$this->db->where('hid', $hid);
 		$this->db->update($table, $data);
+	}
+	
+	public function is_all_hws_rated($hid, $table = 'hw_user')
+	{
+		//echo $this->db->get($table)->count_all_results();
+		$this->db->where('hid', $hid);
+		$query = $this->db->get($table)->result();
+		
+		foreach ($query as $hw) {
+			if ($hw->grade == NULL)
+				return FALSE;
+		}
+		return TRUE;
+	}
+	
+	public function get_rank($hid, $uid, $table = 'hw_user')
+	{
+		$this->db->where('hid', $hid);
+		$this->db->order_by('grade', 'desc');
+		$query = $this->db->get($table)->result_array();
+		for ($rank = 1; $rank <= count($query); $rank++){
+			if ($query[$rank - 1]['uid'] == $uid)
+				return $rank;
+		}
+		return 0;
+	}
+	
+	public function get_members_rank($hid, $gid, $table = 'hw_user')
+	{
+		$this->db->where('gid',$gid);
+		$this->db->select('*');
+		$this->db->from('group_user');
+		$this->db->join('user', 'user.uid = group_user.uid');
+		$this->db->join($table, 'hw_user.uid = group_user.uid');
+		$this->db->where('hid', $hid);
+		$this->db->order_by('group_rank','asc');
+		return $this->db->get();
+	}
+
+	public function update_members_rank($hid, $uid, $rank, $table = 'hw_user')
+	{
+		if ($rank != NULL) {
+			$this->db->where('hid', $hid);
+			$this->db->where('uid', $uid);
+			$query = $this->db->get($table)->row_array();
+			$query['group_rank'] = $rank;
+			$this->db->where('hid', $hid);
+			$this->db->where('uid', $uid);
+			$this->db->update($table, $query);
+		}
 	}
 }
 

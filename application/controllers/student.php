@@ -128,6 +128,60 @@ class Student extends User {
 		}
 	}
 	
+	function rank_member()
+	{
+		$hid = $this->uri->segment(3);
+		$data['member_hws'] = $this->Homework_model->get_members_rank($hid, $this->session->userdata('gid'))->result();
+		$data['css'] = 'typeAlert';
+		$this->load->view('header', $data);
+		$this->load->view('rank_view', $data);
+		$this->load->view('footer');
+	}
+	
+	function rank_member_check()
+	{
+		$hid = $this->uri->segment(3);
+		$member_hws = $this->Homework_model->get_members_rank($hid, $this->session->userdata('gid'))->result();
+		foreach ($member_hws as $hw) {
+			if(isset($_POST[$hw->uid])) {
+				$this->Homework_model->update_members_rank($hid, $hw->uid, $_POST[$hw->uid]);
+			}
+		}
+		redirect('student/rank_member'.'/'.$hid);
+	}
+	
+	function show_others_hw()
+	{
+		$hid = $this->uri->segment(3);
+		$data['reach_deadline'] = $this->uri->segment(4);
+		$data['hid'] = $hid;
+		$data['rate_all_hws'] = $this->Homework_model->is_all_hws_rated($hid);
+		$other_hws = $this->Homework_model->get_others_hw($hid, 
+													$this->session->userdata('uid'), $this->session->userdata('gid'))->result_array();
+		if ($data['rate_all_hws']) {
+			$data['excellent_hws'] = $this->Homework_model->get_excellent_hw($hid)->result_array();
+			$i = 0; $index = 0;
+			while ($i < count($other_hws)){
+				for ($j = 0; $j < count($data['excellent_hws']); $j++) {
+					if ($other_hws[$i]['uid'] == $data['excellent_hws'][$j]['uid']) 
+							break;
+				}
+				if ($j == count($data['excellent_hws'])) {
+					$data['others_hws'][$index] = $other_hws[$i];
+					$index++;
+				}
+				$i++;
+			}
+		}
+		else {
+			$data['others_hws'] = $other_hws;
+		}		
+		$data['css'] = 'typeLittleMetro';
+		$this->load->view('header', $data);
+  		$this->load->view('moreApp_view', $data);
+		$this->load->view('footer');
+	}
+	
 	function upload_hw()
 	{
 		$hid = $this->uri->segment(3);

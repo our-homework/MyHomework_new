@@ -191,6 +191,12 @@ class Group_model extends CI_Model
             return false;
         return true;
     }
+	
+	function get_leader_by_gid($gid, $table = 'group')
+	{
+		$this->db->where('gid', $gid);
+		return $this->db->get($table)->row()->leader_id;
+	}
 }
 
 ?>

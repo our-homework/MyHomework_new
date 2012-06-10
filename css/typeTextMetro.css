@@ -26,9 +26,14 @@ input[type=submit] {
 	color:#fff;
 }
 
+input[type=text] {
+	width:60px;
+}
+
 table
 {
 	width:100%;
+	text-align:center;
 }
 
 .metroWrapper_hw {

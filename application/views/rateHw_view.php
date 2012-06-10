@@ -4,7 +4,7 @@
 	<div class="textWrapper">
     	<table> 
         <form>
-        	<tr textType="title">
+        	<tr>
         		<th>组号</th>
             	<th>姓名</th>
                 <th>学号</th>

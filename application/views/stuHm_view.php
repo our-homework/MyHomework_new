@@ -11,8 +11,12 @@
             	<div class="metro colora">
         			<div class="metroText">
 	        			<div textType="title" ><?= $hw->title?></div>
-	            		<?= isset($hw->grade) ? $hw->grade : ''?>
-        			</div>
+	            		<div>分数：<?= isset($hw->grade) ? $hw->grade : ''?></div>
+	            		<div>组内排名：<?= $hw->rank?></div>
+	            		<div><a href="<?= $hw->src?>">访问应用</a> &nbsp;&nbsp;
+	            			 <a href="<?= site_url('student/download_hw'.'/'.$hw->hid.'/'.$hw->src)?>">下载源码</a>
+	            		</div>
+	            	</div>
             	</div>
        			 </a>
 				<?php
